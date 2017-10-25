@@ -42,7 +42,6 @@ public class Palindrom {
         if (dp.containsKey(i) && dp.get(i).containsKey(j))
             return dp.get(i).get(j);
         boolean res = isPalindrom(str, i + 1, j - 1, dp) && temp;
-        dp.putIfAbsent(i, new HashMap<>());
         dp.get(i).put(j, res);
         return res;
     }
