@@ -24,6 +24,7 @@ public class TileStacking {
         dp.get(top).putIfAbsent(top_left, new HashMap<>());
         dp.get(top).get(top_left).putIfAbsent(n, true);
         return cnt;
+
     }
 
     public static void main(String[] args) {
