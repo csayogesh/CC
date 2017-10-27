@@ -1,3 +1,5 @@
+import common.BasicAlgorithms;
+
 import java.util.Scanner;
 
 /**
@@ -6,7 +8,7 @@ import java.util.Scanner;
 public class StockPurchaseDay {
     static int stockPurchaseDay(int[] A, int xi) {
         // Complete this function
-        return CommonAlgorithms.binarySearchAtMostIndex(A, xi, 0, A.length - 1) + 1;
+        return BasicAlgorithms.binarySearchAtMostIndex(A, xi, 0, A.length - 1) + 1;
     }
 
     public static void main(String[] args) {
