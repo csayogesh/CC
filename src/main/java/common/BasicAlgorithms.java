@@ -1,5 +1,9 @@
 package common;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by yogesh.bh on 25/10/17 in CC.
  */
@@ -42,6 +46,23 @@ public class BasicAlgorithms {
             parents[i] = i;
     }
 
+    public static int kruskalMinSpanTree(int noOfVertices, List<Map.Entry<Map.Entry<Integer, Integer>, Integer>> edgesWithWeight) {
+        int[] parents = new int[noOfVertices];
+        int[] ranks = new int[noOfVertices];
+        makeSet(parents);
+        edgesWithWeight.sort(Comparator.comparing(Map.Entry::getValue));
+        int spaningTreeWeight = 0;
+        for (Map.Entry<Map.Entry<Integer, Integer>, Integer> vertice : edgesWithWeight) {
+            int x = vertice.getKey().getKey();
+            int y = vertice.getKey().getValue();
+            if (find(parents, x) != find(parents, y)) {
+                union(parents, ranks, x, y);
+                spaningTreeWeight += vertice.getValue();
+            }
+        }
+        return spaningTreeWeight;
+    }
+
     public static void main(String[] args) {
         int[] parents = new int[20];
         int[] ranks = new int[20];
@@ -50,12 +71,12 @@ public class BasicAlgorithms {
         System.out.println(find(parents, 0));
         System.out.println(find(parents, 1));
         union(parents, ranks, 0, 1);
-        union(parents,ranks,7,9);
-        union(parents,ranks,0,9);
-        System.out.println(find(parents,5));
-        System.out.println(find(parents,9));
-        System.out.println(find(parents,7));
-        System.out.println(find(parents,0));
-        System.out.println(find(parents,1));
+        union(parents, ranks, 7, 9);
+        union(parents, ranks, 0, 9);
+        System.out.println(find(parents, 5));
+        System.out.println(find(parents, 9));
+        System.out.println(find(parents, 7));
+        System.out.println(find(parents, 0));
+        System.out.println(find(parents, 1));
     }
 }
