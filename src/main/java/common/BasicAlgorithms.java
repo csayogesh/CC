@@ -2,7 +2,6 @@ package common;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by yogesh.bh on 25/10/17 in CC.
@@ -46,18 +45,18 @@ public class BasicAlgorithms {
             parents[i] = i;
     }
 
-    public static int kruskalMinSpanTree(int noOfVertices, List<Map.Entry<Map.Entry<Integer, Integer>, Integer>> edgesWithWeight) {
+    public static int kruskalMinSpanTree(int noOfVertices, List<Edge> edgesWithWeight) {
         int[] parents = new int[noOfVertices];
         int[] ranks = new int[noOfVertices];
         makeSet(parents);
-        edgesWithWeight.sort(Comparator.comparing(Map.Entry::getValue));
+        edgesWithWeight.sort(Comparator.comparing(e -> e.w));
         int spaningTreeWeight = 0;
-        for (Map.Entry<Map.Entry<Integer, Integer>, Integer> vertice : edgesWithWeight) {
-            int x = vertice.getKey().getKey();
-            int y = vertice.getKey().getValue();
-            if (find(parents, x) != find(parents, y)) {
-                union(parents, ranks, x, y);
-                spaningTreeWeight += vertice.getValue();
+        for (Edge e : edgesWithWeight) {
+            int src = e.src;
+            int dst = e.dst;
+            if (find(parents, src) != find(parents, dst)) {
+                union(parents, ranks, src, dst);
+                spaningTreeWeight += e.w;
             }
         }
         return spaningTreeWeight;
