@@ -66,7 +66,7 @@ public class BasicAlgorithms {
         int sum = 0;
         for (int i = 0; i < window && i < array.size(); i++) sum += array.get(i);
         int ans = sum;
-        for (int i = window; i < 2 * array.size(); i++) {
+        for (int i = window; i < array.size() + window; i++) {
             sum += array.get(i % array.size());
             sum -= array.get((i % array.size() - window + array.size()) % array.size());
             ans = Math.min(sum, ans);

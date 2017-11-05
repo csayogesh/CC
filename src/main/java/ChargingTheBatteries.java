@@ -55,8 +55,8 @@ public class ChargingTheBatteries {
                 y += dy;
             }
         }
-        distances.add(Math.abs(px - fx) + Math.abs(py - fx));
-        System.out.println(BasicAlgorithms.circularMinSumSlidingWindow(distances, k-1));
+        distances.add(Math.abs(px - fx) + Math.abs(py - fy));
+        System.out.println(BasicAlgorithms.circularMinSumSlidingWindow(distances, k - 1));
         in.close();
     }
 }
