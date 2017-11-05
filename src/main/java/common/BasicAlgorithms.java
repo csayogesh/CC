@@ -62,20 +62,15 @@ public class BasicAlgorithms {
         return spaningTreeWeight;
     }
 
-    public static void main(String[] args) {
-        int[] parents = new int[20];
-        int[] ranks = new int[20];
-
-        makeSet(parents);
-        System.out.println(find(parents, 0));
-        System.out.println(find(parents, 1));
-        union(parents, ranks, 0, 1);
-        union(parents, ranks, 7, 9);
-        union(parents, ranks, 0, 9);
-        System.out.println(find(parents, 5));
-        System.out.println(find(parents, 9));
-        System.out.println(find(parents, 7));
-        System.out.println(find(parents, 0));
-        System.out.println(find(parents, 1));
+    public static int circularMinSumSlidingWindow(List<Integer> array, int window) {
+        int sum = 0;
+        for (int i = 0; i < window && i < array.size(); i++) sum += array.get(i);
+        int ans = sum;
+        for (int i = window; i < 2 * array.size(); i++) {
+            sum += array.get(i % array.size());
+            sum -= array.get((i % array.size() - window + array.size()) % array.size());
+            ans = Math.min(sum, ans);
+        }
+        return ans;
     }
 }

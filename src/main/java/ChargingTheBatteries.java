@@ -1,3 +1,4 @@
+import common.BasicAlgorithms;
 import sun.rmi.server.InactiveGroupException;
 
 import java.util.*;
@@ -19,7 +20,6 @@ public class ChargingTheBatteries {
             points.putIfAbsent(x, new HashMap<>());
             points.get(x).putIfAbsent(y, 0);
             points.get(x).put(y, points.get(x).get(y) + 1);
-            System.out.println(points);
         }
         int traverse[][] = {
                 {1, 0, n, 0},
@@ -56,6 +56,7 @@ public class ChargingTheBatteries {
             }
         }
         distances.add(Math.abs(px - fx) + Math.abs(py - fx));
+        System.out.println(BasicAlgorithms.circularMinSumSlidingWindow(distances, k-1));
         in.close();
     }
 }
