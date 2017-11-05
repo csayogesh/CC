@@ -1,6 +1,4 @@
-import common.BasicAlgorithms;
-import common.Edge;
-import common.Point;
+import sun.rmi.server.InactiveGroupException;
 
 import java.util.*;
 import java.util.Scanner;
@@ -14,36 +12,50 @@ public class ChargingTheBatteries {
         int n = in.nextInt();
         int m = in.nextInt();
         int k = in.nextInt();
-        List<Point> points = new ArrayList<>();
-        int bias = Integer.MAX_VALUE;
+        Map<Integer, Map<Integer, Integer>> points = new HashMap<>();
         for (int a0 = 0; a0 < m; a0++) {
             int x = in.nextInt();
             int y = in.nextInt();
-            Point p = new Point();
-            p.x = x;
-            p.y = y;
-            points.add(p);
-            int xMin = Math.min(Math.abs(x - n), x);
-            int yMin = Math.min(Math.abs(y - n), y);
-            int min = Math.min(xMin, yMin);
-            bias = Math.min(min, bias);
+            points.putIfAbsent(x, new HashMap<>());
+            points.get(x).putIfAbsent(y, 0);
+            points.get(x).put(y, points.get(x).get(y) + 1);
+            System.out.println(points);
         }
-        in.close();
-        List<Edge> edges = new ArrayList<>();
-        for (int i = 0; i < m - 1; i++)
-            for (int j = i + 1; j < m; j++) {
-                int weight = dist(points.get(i), points.get(j));
-                Edge e = new Edge();
-                e.src = i;
-                e.dst = j;
-                e.w = weight;
-                edges.add(e);
+        int traverse[][] = {
+                {1, 0, n, 0},
+                {0, 1, n, n},
+                {-1, 0, 0, n},
+                {0, -1, 0, 0}
+        };
+        int x = 0, y = 0;
+        int px = -1, py = -1;
+        int fx = -1, fy = -1;
+        boolean pointChosen = false;
+        List<Integer> distances = new ArrayList<>();
+        for (int i = 0; i < traverse.length; i++) {
+            int dx = traverse[i][0];
+            int dy = traverse[i][1];
+            in:
+            while (true) {
+                while (points.containsKey(x) && points.get(x).containsKey(y) && points.get(x).get(y) > 0) {
+                    if (!pointChosen) {
+                        px = fx = x;
+                        py = fy = y;
+                        pointChosen = true;
+                    } else {
+                        distances.add(Math.abs(px - x) + Math.abs(py - y));
+                        px = x;
+                        py = y;
+                    }
+                    points.get(x).put(y, points.get(x).get(y) - 1);
+                }
+                if (x == traverse[i][2] && y == traverse[i][3])
+                    break in;
+                x += dx;
+                y += dy;
             }
-        int res = bias + BasicAlgorithms.kruskalMinSpanTree(m, edges);
-        System.out.println(res);
-    }
-
-    private static int dist(Point v1, Point v2) {
-        return Math.abs(v1.x - v2.x) + Math.abs(v1.y - v2.y);
+        }
+        distances.add(Math.abs(px - fx) + Math.abs(py - fx));
+        in.close();
     }
 }
