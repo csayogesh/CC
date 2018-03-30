@@ -1,8 +1,6 @@
 import common.BasicAlgorithms;
-import sun.rmi.server.InactiveGroupException;
 
 import java.util.*;
-import java.util.Scanner;
 
 /**
  * Created by yogesh.bh on 04/11/17 in CC.

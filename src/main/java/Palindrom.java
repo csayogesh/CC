@@ -1,4 +1,6 @@
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 /**
  * Created by yogesh.bh on 15/10/17 in CC.
