@@ -5,7 +5,9 @@ import java.util.*;
 
 public class DijkstraAlgorithm {
 
-    static int[] shortestReach(int n, Map<Integer, Map<Integer,Integer>> adjList, int s) {
+    private static final BufferedReader scanner = new BufferedReader(new InputStreamReader(System.in));
+
+    static int[] shortestReach(int n, Map<Integer, Map<Integer, Integer>> adjList, int s) {
         int dist[] = new int[n + 1];
         for (int i = 0; i < dist.length; i++) dist[i] = Integer.MAX_VALUE;
         dist[s] = 0;
@@ -18,7 +20,7 @@ public class DijkstraAlgorithm {
             int[] minNode = toVisit.remove();
             dist[minNode[1]] = minNode[0];
             int minDist = minNode[0];
-            for (Map.Entry<Integer,Integer> adjNode : adjList.get(minNode[1]).entrySet()) {
+            for (Map.Entry<Integer, Integer> adjNode : adjList.get(minNode[1]).entrySet()) {
                 if (!selectedNodes.contains(adjNode.getKey())) {
                     if (dist[adjNode.getKey()] > minDist + adjNode.getValue()) {
                         qNodes.putIfAbsent(adjNode.getKey(), new int[]{minDist + adjNode.getValue(), adjNode.getKey()});
@@ -32,8 +34,8 @@ public class DijkstraAlgorithm {
             selectedNodes.add(minNode[1]);
         }
         int ans[] = new int[n - 1];
-        for(int i=0;i<dist.length;i++)
-            if(dist[i]==Integer.MAX_VALUE)
+        for (int i = 0; i < dist.length; i++)
+            if (dist[i] == Integer.MAX_VALUE)
                 dist[i] = -1;
         int i = 0;
         for (int j = 1; j <= n; j++)
@@ -42,15 +44,13 @@ public class DijkstraAlgorithm {
         return ans;
     }
 
-    private static final BufferedReader scanner=new BufferedReader(new InputStreamReader(System.in));
-
     public static void main(String[] args) throws IOException {
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
-        StringTokenizer line = new StringTokenizer(scanner.readLine()," ");
+        StringTokenizer line = new StringTokenizer(scanner.readLine(), " ");
         int t = Integer.parseInt(line.nextToken());
 
         for (int tItr = 0; tItr < t; tItr++) {
-            line = new StringTokenizer(scanner.readLine()," ");
+            line = new StringTokenizer(scanner.readLine(), " ");
 
             int n = Integer.parseInt(line.nextToken());
 
@@ -58,21 +58,21 @@ public class DijkstraAlgorithm {
 
             int[][] edges = new int[m][3];
 
-            Map<Integer, Map<Integer,Integer>> adjList = new HashMap();
+            Map<Integer, Map<Integer, Integer>> adjList = new HashMap();
             for (int edgesRowItr = 0; edgesRowItr < m; edgesRowItr++) {
-                line = new StringTokenizer(scanner.readLine()," ");
+                line = new StringTokenizer(scanner.readLine(), " ");
                 int one = Integer.parseInt(line.nextToken());
                 int two = Integer.parseInt(line.nextToken());
                 int three = Integer.parseInt(line.nextToken());
-                int[] edge = new int[]{one,two,three};
+                int[] edge = new int[]{one, two, three};
                 adjList.putIfAbsent(edge[0], new HashMap());
                 adjList.putIfAbsent(edge[1], new HashMap());
-                int existingWt = adjList.get(edge[0]).getOrDefault(edge[1],Integer.MAX_VALUE);
-                adjList.get(edge[0]).put(edge[1], Math.min(existingWt,edge[2]));
-                adjList.get(edge[1]).put(edge[0], Math.min(existingWt,edge[2]));
+                int existingWt = adjList.get(edge[0]).getOrDefault(edge[1], Integer.MAX_VALUE);
+                adjList.get(edge[0]).put(edge[1], Math.min(existingWt, edge[2]));
+                adjList.get(edge[1]).put(edge[0], Math.min(existingWt, edge[2]));
             }
 
-            line = new StringTokenizer(scanner.readLine()," ");
+            line = new StringTokenizer(scanner.readLine(), " ");
             int s = Integer.parseInt(line.nextToken());
 
             int[] result = shortestReach(n, adjList, s);
