@@ -13,20 +13,14 @@ public class DijkstraAlgorithm {
         dist[s] = 0;
         PriorityQueue<int[]> toVisit = new PriorityQueue<>((node1, node2) -> Integer.compare(node1[0], node2[0]));
         Set<Integer> selectedNodes = new HashSet();
-        Map<Integer, int[]> qNodes = new HashMap();
-        qNodes.put(s, new int[]{0, s});
-        toVisit.add(qNodes.get(s));
+        toVisit.add(new int[]{0, s});
         while (toVisit.size() > 0) {
             int[] minNode = toVisit.remove();
-            dist[minNode[1]] = minNode[0];
             int minDist = minNode[0];
             for (Map.Entry<Integer, Integer> adjNode : adjList.get(minNode[1]).entrySet()) {
                 if (!selectedNodes.contains(adjNode.getKey())) {
                     if (dist[adjNode.getKey()] > minDist + adjNode.getValue()) {
-                        qNodes.putIfAbsent(adjNode.getKey(), new int[]{minDist + adjNode.getValue(), adjNode.getKey()});
-                        toVisit.remove(qNodes.get(adjNode.getKey()));
-                        qNodes.get(adjNode.getKey())[0] = minDist + adjNode.getValue();
-                        toVisit.add(qNodes.get(adjNode.getKey()));
+                        toVisit.add(new int[]{minDist + adjNode.getValue(), adjNode.getKey()});
                         dist[adjNode.getKey()] = minDist + adjNode.getValue();
                     }
                 }
