@@ -1,17 +1,22 @@
 package common;// Test.java
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 public class PriorityQueue {
     public static void main(String[] args) {
-        Comparator<String> comparator = new StringLengthComparator();
-        java.util.PriorityQueue<String> queue =
-                new java.util.PriorityQueue<String>(10, comparator);
-        queue.add("short");
-        queue.add("short");
-        queue.add("short");
-        queue.add("very long indeed");
-        queue.add("medium");
+        java.util.PriorityQueue<List<Integer>> queue =
+                new java.util.PriorityQueue<>((o1, o2) -> Integer.compare(o1.get(0), o2.get(0)));
+        List<Integer> ar = new ArrayList<Integer>(){{add(1); add(2);}};
+        List<Integer> ar2 = new ArrayList<Integer>(){{add(2); add(3);}};
+        List<Integer> ar3 = new ArrayList<Integer>(){{add(3); add(4);}};
+        queue.add(ar2);
+        queue.add(ar3);
+        queue.add(ar);
+        queue.remove(ar2);
+        ar2.set(0,-1);
+        queue.add(ar2);
         while (queue.size() != 0) {
             System.out.println(queue.remove());
         }
