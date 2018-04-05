@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-class Solution {
+public class MinInsertionsToMakePalindrome {
     private Map<Integer, Map<Integer, Integer>> dp = new HashMap();
 
     public int solve(String A) {

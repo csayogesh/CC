@@ -3,7 +3,7 @@ import java.util.*;
 /**
  * Created by yogesh.bh on 29/03/18.
  */
-class Solution2 {
+public class MaximumSumElemsFromTwoArrays {
     public ArrayList<Integer> solve(ArrayList<Integer> A, ArrayList<Integer> B) {
         Collections.sort(A);
         Collections.sort(B);
