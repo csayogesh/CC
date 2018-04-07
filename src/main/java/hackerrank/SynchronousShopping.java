@@ -1,27 +1,32 @@
 package hackerrank;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class SynchronousShopping {
-    public static void main(String[] args) {
-        long startTime = System.currentTimeMillis();
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int m = sc.nextInt();
-        int k = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader sc = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer line = new StringTokenizer(sc.readLine(), " ");
+        int n = Integer.parseInt(line.nextToken());
+        int m = Integer.parseInt(line.nextToken());
+        int k = Integer.parseInt(line.nextToken());
         int fishAtNode[] = new int[n + 1];
         for (int i = 1; i <= n; i++) {
-            int types = sc.nextInt();
+            line = new StringTokenizer(sc.readLine(), " ");
+            int types = Integer.parseInt(line.nextToken());
             int fishes = 0;
             for (int j = 0; j < types; j++)
-                fishes |= 1 << (sc.nextInt() - 1);
+                fishes |= 1 << (Integer.parseInt(line.nextToken()) - 1);
             fishAtNode[i] = fishes;
         }
         Map<Integer, List<int[]>> adjList = new HashMap();
         for (int i = 0; i < m; i++) {
-            int from = sc.nextInt();
-            int to = sc.nextInt();
-            int wt = sc.nextInt();
+            line = new StringTokenizer(sc.readLine(), " ");
+            int from = Integer.parseInt(line.nextToken());
+            int to = Integer.parseInt(line.nextToken());
+            int wt = Integer.parseInt(line.nextToken());
             adjList.putIfAbsent(from, new ArrayList());
             adjList.putIfAbsent(to, new ArrayList());
             adjList.get(from).add(new int[]{to, wt});
