@@ -43,23 +43,39 @@ public class SherlockAndCost {
             for (int arr_i = 0; arr_i < n; arr_i++) {
                 arr[arr_i] = in.nextInt();
             }
-            int result = Math.max(cost(arr, arr.length - 1, 1), cost(arr, arr.length - 1, arr[n - 1]));
+            int result = cost(arr);
             System.out.println(result);
-            dp.clear();
         }
         in.close();
     }
 
+    private static int cost(int[] arr) {
+        int hi, low;
+        hi = low = 0;
+        for (int i = 1; i < arr.length; i++) {
+            int lowToHigh = Math.abs(1 - arr[i]);
+            int highToLow = Math.abs(arr[i - 1] - 1);
+            int highToHigh = Math.abs(arr[i - 1] - arr[i]);
+
+            int lowNext = Math.max(low, hi + highToLow);
+            int hiNext = Math.max(hi + highToHigh, low + lowToHigh);
+
+            low = lowNext;
+            hi = hiNext;
+        }
+        return Math.max(hi, low);
+    }
+
     private static Map<Integer, Map<Integer, Integer>> dp = new HashMap<>();
 
-    private static int cost(int[] arr, int i, int end) {
+    private static int cost2(int[] arr, int i, int end) {
         if (i == 0)
             return 0;
         if (dp.containsKey(i) && dp.get(i).containsKey(end))
             return dp.get(i).get(end);
         dp.putIfAbsent(i, new HashMap<>());
-        int sub1 = cost(arr, i - 1, 1);
-        int sub2 = cost(arr, i - 1, arr[i - 1]);
+        int sub1 = cost2(arr, i - 1, 1);
+        int sub2 = cost2(arr, i - 1, arr[i - 1]);
         List<Integer> sums = new ArrayList<>();
         sums.add(sub1 + Math.abs(end - 1));
         sums.add(sub2 + Math.abs(end - arr[i - 1]));
