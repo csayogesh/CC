@@ -45,6 +45,7 @@ public class SherlockAndCost {
             }
             int result = Math.max(cost(arr, arr.length - 1, 1), cost(arr, arr.length - 1, arr[n - 1]));
             System.out.println(result);
+            dp.clear();
         }
         in.close();
     }
