@@ -14,7 +14,7 @@ public class FindMedian {
     }
 
     private static int find(int[] arr, int i, int j, int n) {
-        int pivot = arr[i];
+        int pivot = arr[(int) (i + (j - i + 1) * Math.random())];
         int st = i;
         int en = j;
         for (; i < j; ) {
