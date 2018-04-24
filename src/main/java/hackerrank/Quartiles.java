@@ -20,7 +20,7 @@ public class Quartiles {
         double[] ar = median(ls, 0, ls.size() - 1);
         double q2 = ar[0];
         double q1 = median(ls, 0, (int) Math.floor(ar[1] - 0.1))[0];
-        double q3 = median(ls, 0, (int) Math.ceil(ar[1] + 0.1))[0];
+        double q3 = median(ls, (int) Math.ceil(ar[1] + 0.1), n - 1)[0];
         System.out.println(q1);
         System.out.println(q2);
         System.out.println(q3);
