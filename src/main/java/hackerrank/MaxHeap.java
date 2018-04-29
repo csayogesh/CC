@@ -6,8 +6,8 @@ import java.util.ArrayList;
  * Created by yogesh.bh on 29/04/18.
  */
 public class MaxHeap {
-    ArrayList<Integer> ls = new ArrayList<>();
-    int size = 0;
+    private ArrayList<Integer> ls = new ArrayList<>();
+    private int size = 0;
 
     public MaxHeap() {
     }
@@ -47,11 +47,11 @@ public class MaxHeap {
         }
     }
 
-    int findMax() {
+    public int findMax() {
         return ls.get(0);
     }
 
-    int removeMax() {
+    public int removeMax() {
         int ans = findMax();
         ls.set(0, ls.get(size - 1));
         size = size - 1;
@@ -59,7 +59,7 @@ public class MaxHeap {
         return ans;
     }
 
-    void insert(int key) {
+    public void insert(int key) {
         if (ls.size() > size) ls.set(size, Integer.MIN_VALUE);
         else ls.add(Integer.MIN_VALUE);
         size++;
@@ -76,15 +76,19 @@ public class MaxHeap {
         }
     }
 
-    int left(int i) {
+    private int left(int i) {
         return 2 * i;
     }
 
-    int right(int i) {
+    private int right(int i) {
         return 2 * i + 1;
     }
 
-    int parent(int i) {
+    private int parent(int i) {
         return i / 2;
+    }
+
+    public int getSize() {
+        return size;
     }
 }
