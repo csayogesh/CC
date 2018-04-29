@@ -51,7 +51,7 @@ public class MinHeap {
         return ls.get(0);
     }
 
-    public int removeMax() {
+    public int removeMin() {
         int ans = findMin();
         ls.set(0, ls.get(size - 1));
         size = size - 1;
