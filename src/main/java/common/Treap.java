@@ -6,157 +6,92 @@ import com.google.gson.Gson;
  * Created by yogesh.bh on 09/05/18.
  */
 class TreapNode {
-    public int data;
-    public int rank;
-    public int leftCnt = 1;
-    public int totalCnt = 1;
-    public double w;
-    public transient TreapNode left, right, parent;
+    private int d;
+    private int key;
+    private double w;
+    private transient TreapNode left, right, parent;
+
+    private int lCnt = 1;
+    private int tCnt = 1;
+
+    public TreapNode(int data, int key, double w) {
+        this.d = data;
+        this.key = key;
+        this.w = w;
+    }
+
+    public static void insertNodeInATree(TreapNode tree, TreapNode node) {
+        if (node.key < tree.key)
+            setLeft(tree, node);
+        else setRight(tree, node);
+    }
+
+    private static void setRight(TreapNode tree, TreapNode node) {
+        if (tree != null) {
+            if (node != null)
+                tree.tCnt += node.tCnt;
+            if (tree.right != null)
+                insertNodeInATree(tree.right, node);
+            else {
+                tree.right = node;
+                node.parent = tree;
+            }
+        }
+    }
+
+    private static void setLeft(TreapNode tree, TreapNode node) {
+        if (tree != null) {
+            if (node != null) {
+                tree.lCnt += node.tCnt;
+                tree.tCnt += node.tCnt;
+            }
+            if (tree.left != null)
+                insertNodeInATree(tree.left, node);
+            else {
+                tree.left = node;
+                node.parent = tree;
+            }
+        }
+    }
+
+    public static void print(TreapNode root) {
+        if (root == null)
+            return;
+        print(root.left);
+        System.out.print(new Gson().toJson(root));
+        System.out.print(" -> ");
+        System.out.print(new Gson().toJson(root.left));
+        System.out.print(" -> ");
+        System.out.print(new Gson().toJson(root.right));
+        System.out.print(" -> ");
+        System.out.println(new Gson().toJson(root.parent));
+        print(root.right);
+    }
 }
 
 public class Treap {
     TreapNode root = null;
 
-    public void insert(TreapNode cur, TreapNode node) {
-        if (root == null) {
-            root = node;
-            return;
+    public static void main(String[] args) {
+        int[] ar = {1, 2, 3};
+
+        Treap treap = new Treap();
+
+        for (int i = 0; i < ar.length; i++) {
+            treap.insertNode(new TreapNode(ar[i], i + 1, Math.random()));
         }
-        cur.totalCnt++;
-        if (node.rank < cur.rank) {
-            cur.leftCnt++;
-            if (cur.left != null)
-                insert(cur.left, node);
-            else {
-                cur.left = node;
-                node.parent = cur;
-            }
-        } else {
-            if (cur.right != null) {
-                insert(cur.right, node);
-            } else {
-                cur.right = node;
-                node.parent = cur;
-            }
-        }
+
+        treap.print();
     }
 
-    public TreapNode[] split(int rank) {
-        TreapNode node = new TreapNode();
-        node.rank = rank;
-        node.data = rank * 10 + rank;
-        node.w = Integer.MAX_VALUE;
-        insert(root, node);
-        printDel(root);
-        maintainMaxHeap(node, false);
-        root = node;
-        printDel(root);
-        return new TreapNode[]{node.left, node.right};
-    }
-
-    public TreapNode find(int rank) {
-        return find(root, rank);
-    }
-
-    private TreapNode find(TreapNode root, int rank) {
-        if (root == null || root.rank == rank) return root;
-        if (rank > root.rank)
-            return find(root.right, rank - root.rank);
-        return find(root.left, rank);
-    }
-
-    private void insert(TreapNode node) {
-        insert(root, node);
-        maintainMaxHeap(node, false);
-        if (node.parent == null)
-            root = node;
-    }
-
-    private void maintainMaxHeap(TreapNode node, boolean mode) {
-        while (node.parent != null && node.parent.w < node.w) {
-            if (mode) printDel(node.parent);
-            if (node.parent.left == node)
-                rightRotate(node.parent);
-            else leftRotate(node.parent);
-            if (mode) printDel(node);
-        }
-    }
-
-    private void rightRotate(TreapNode node) {
-        TreapNode newParent = node.left;
-        TreapNode nodeParent = node.parent;
-        if (nodeParent != null)
-            if (nodeParent.left == node)
-                nodeParent.left = newParent;
-            else nodeParent.right = newParent;
-        assignLeftChild(node, newParent.right);
-        assignRightChild(newParent, node);
-        newParent.parent = nodeParent;
-    }
-
-    private void leftRotate(TreapNode node) {
-        TreapNode newParent = node.right;
-        TreapNode nodeParent = node.parent;
-        if (nodeParent != null)
-            if (nodeParent.left == node)
-                nodeParent.left = newParent;
-            else nodeParent.right = newParent;
-        assignRightChild(node, newParent.left);
-        assignLeftChild(newParent, node);
-        newParent.parent = nodeParent;
-    }
-
-    private static void assignLeftChild(TreapNode node, TreapNode child) {
-        if (node != null) {
-            node.left = child;
-            node.leftCnt = 1;
-            if (child != null) {
-                child.parent = node;
-                node.leftCnt += child.totalCnt;
-            }
-        }
-    }
-
-    private static void assignRightChild(TreapNode node, TreapNode child) {
-        if (node != null) {
-            node.right = child;
-            if (child != null)
-                child.parent = node;
-        }
-    }
-
-    private void printDel(TreapNode node) {
-        printTree(node);
+    private void print() {
+        TreapNode.print(root);
         System.out.println("\n\n\n");
     }
 
-    private void printTree(TreapNode node) {
-        if (node == null)
-            return;
-        System.out.print(new Gson().toJson(node));
-        System.out.println(" -> " + new Gson().toJson(node.left) + " -> " + new Gson().toJson(node.right)
-                + " -> " + new Gson().toJson(node.parent));
-        printTree(node.left);
-        printTree(node.right);
-    }
-
-    public static void main(String[] args) {
-        int[] ar = {1, 2, 3};
-        Treap treap = new Treap();
-        for (int i = 0; i < ar.length; i++) {
-            int rank = i + 1;
-            int data = ar[i];
-            TreapNode node = new TreapNode();
-            node.data = data;
-            node.rank = rank;
-            node.w = rank % 2 == 1 ? rank * 2 : rank;
-            treap.insert(node);
-        }
-        treap.printDel(treap.root);
-
-        TreapNode[] sp = treap.split(2);
-
-        treap.printDel(sp[0]);
-        treap.printDel(sp[1]);
+    private void insertNode(TreapNode treapNode) {
+        if (root == null)
+            root = treapNode;
+        else TreapNode.insertNodeInATree(root, treapNode);
     }
 }
