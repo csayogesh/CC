@@ -1,5 +1,7 @@
 package common;
 
+import com.google.gson.Gson;
+
 /**
  * Created by yogesh.bh on 09/05/18.
  */
@@ -7,7 +9,7 @@ class TreapNode {
     public int data;
     public int rank;
     public double w;
-    public TreapNode left, right, parent;
+    public transient TreapNode left, right, parent;
 }
 
 public class Treap {
@@ -39,8 +41,13 @@ public class Treap {
     public TreapNode[] split(int rank) {
         TreapNode node = new TreapNode();
         node.rank = rank;
-        node.w = 2.0;
-        insert(node);
+        node.data = rank * 10 + rank;
+        node.w = Integer.MAX_VALUE;
+        insert(root, node);
+        printDel(root);
+        maintainMaxHeap(node, true);
+        root = node;
+//        printDel(root);
         return new TreapNode[]{node.left, node.right};
     }
 
@@ -57,16 +64,18 @@ public class Treap {
 
     private void insert(TreapNode node) {
         insert(root, node);
-        maintainMaxHeap(node);
+        maintainMaxHeap(node, false);
         if (node.parent == null)
             root = node;
     }
 
-    private void maintainMaxHeap(TreapNode node) {
+    private void maintainMaxHeap(TreapNode node, boolean mode) {
         while (node.parent != null && node.parent.w < node.w) {
+            if (mode) printDel(node.parent);
             if (node.parent.left == node)
                 rightRotate(node.parent);
             else leftRotate(node.parent);
+            if (mode) printDel(node);
         }
     }
 
@@ -99,7 +108,7 @@ public class Treap {
     }
 
     public static void main(String[] args) {
-        int[] ar = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+        int[] ar = {1, 2, 3};
         Treap treap = new Treap();
         for (int i = 0; i < ar.length; i++) {
             int rank = i + 1;
@@ -107,11 +116,31 @@ public class Treap {
             TreapNode node = new TreapNode();
             node.data = data;
             node.rank = rank;
-            node.w = Math.random();
+            node.w = rank % 2 == 1 ? rank * 2 : rank;
             treap.insert(node);
+            treap.printDel(treap.root);
         }
 
-        for (int i = 1; i <= 10; i++)
-            System.out.println(treap.find(i).data);
+//        treap.printDel(treap.root);
+
+//        TreapNode[] sp = treap.split(2);
+
+//        treap.printDel(sp[0]);
+//        treap.printDel(sp[1]);
+    }
+
+    private void printDel(TreapNode node) {
+        printTree(node);
+        System.out.println("\n\n\n");
+    }
+
+    private void printTree(TreapNode node) {
+        if (node == null)
+            return;
+        System.out.print(new Gson().toJson(node));
+        System.out.println(" -> " + new Gson().toJson(node.left) + " -> " + new Gson().toJson(node.right)
+                + " -> " + new Gson().toJson(node.parent));
+        printTree(node.left);
+        printTree(node.right);
     }
 }
