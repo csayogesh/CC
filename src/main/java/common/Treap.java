@@ -34,7 +34,8 @@ class TreapNode {
                 insertNodeInATree(tree.right, node);
             else {
                 tree.right = node;
-                node.parent = tree;
+                if (node != null)
+                    node.parent = tree;
             }
         }
     }
@@ -49,7 +50,8 @@ class TreapNode {
                 insertNodeInATree(tree.left, node);
             else {
                 tree.left = node;
-                node.parent = tree;
+                if (node != null)
+                    node.parent = tree;
             }
         }
     }
@@ -57,7 +59,6 @@ class TreapNode {
     public static void print(TreapNode root) {
         if (root == null)
             return;
-        print(root.left);
         System.out.print(new Gson().toJson(root));
         System.out.print(" -> ");
         System.out.print(new Gson().toJson(root.left));
@@ -65,7 +66,79 @@ class TreapNode {
         System.out.print(new Gson().toJson(root.right));
         System.out.print(" -> ");
         System.out.println(new Gson().toJson(root.parent));
+        print(root.left);
         print(root.right);
+    }
+
+    public static void maintainMaxHeap(TreapNode treapNode) {
+        while (treapNode.parent != null && treapNode.parent.w < treapNode.w) {
+            if (treapNode.parent.left == treapNode)
+                doRightRotation(treapNode.parent);
+            else doLeftRotation(treapNode.parent);
+        }
+    }
+
+    private static void doLeftRotation(TreapNode node) {
+        if (node == null) return;
+        TreapNode nodeParent = node.parent;
+        boolean nodeParentLeft = false;
+        if (nodeParent != null)
+            if (nodeParent.left == node) {
+                stripLeft(nodeParent);
+                nodeParentLeft = true;
+            } else stripRight(nodeParent);
+        TreapNode right = stripRight(node);
+        TreapNode left = stripRight(right);
+        setRight(node, left);
+        setLeft(right, node);
+        if (nodeParent != null)
+            if (nodeParentLeft) setLeft(nodeParent, right);
+            else setRight(nodeParent, right);
+    }
+
+    private static void doRightRotation(TreapNode node) {
+        if (node == null) return;
+        TreapNode nodeParent = node.parent;
+        boolean nodeParentLeft = false;
+        if (nodeParent != null)
+            if (nodeParent.left == node) {
+                stripLeft(nodeParent);
+                nodeParentLeft = true;
+            } else stripRight(nodeParent);
+        TreapNode left = stripLeft(node);
+        TreapNode right = stripRight(left);
+        setLeft(node, right);
+        setRight(left, node);
+        if (nodeParent != null)
+            if (nodeParentLeft) setLeft(nodeParent, left);
+            else setRight(nodeParent, left);
+    }
+
+    private static TreapNode stripRight(TreapNode node) {
+        TreapNode res = null;
+        if (node != null && node.right != null) {
+            res = node.right;
+            node.right = null;
+            res.parent = null;
+            node.tCnt -= res.tCnt;
+        }
+        return res;
+    }
+
+    private static TreapNode stripLeft(TreapNode node) {
+        TreapNode res = null;
+        if (node != null && node.left != null) {
+            res = node.left;
+            node.left = null;
+            res.parent = null;
+            node.tCnt -= res.tCnt;
+            node.lCnt -= res.tCnt;
+        }
+        return res;
+    }
+
+    public boolean isRoot() {
+        return parent == null;
     }
 }
 
@@ -93,5 +166,8 @@ public class Treap {
         if (root == null)
             root = treapNode;
         else TreapNode.insertNodeInATree(root, treapNode);
+        TreapNode.maintainMaxHeap(treapNode);
+        if (treapNode.isRoot())
+            root = treapNode;
     }
 }
