@@ -88,7 +88,7 @@ class TreapNode {
                 nodeParentLeft = true;
             } else stripRight(nodeParent);
         TreapNode right = stripRight(node);
-        TreapNode left = stripRight(right);
+        TreapNode left = stripLeft(right);
         setRight(node, left);
         setLeft(right, node);
         if (nodeParent != null)
@@ -114,7 +114,7 @@ class TreapNode {
             else setRight(nodeParent, left);
     }
 
-    private static TreapNode stripRight(TreapNode node) {
+    public static TreapNode stripRight(TreapNode node) {
         TreapNode res = null;
         if (node != null && node.right != null) {
             res = node.right;
@@ -125,7 +125,7 @@ class TreapNode {
         return res;
     }
 
-    private static TreapNode stripLeft(TreapNode node) {
+    public static TreapNode stripLeft(TreapNode node) {
         TreapNode res = null;
         if (node != null && node.left != null) {
             res = node.left;
@@ -140,10 +140,56 @@ class TreapNode {
     public boolean isRoot() {
         return parent == null;
     }
+
+    public static void insertSplitter(TreapNode tree, TreapNode splitter) {
+        if (splitter.key < tree.lCnt)
+            setLeftSplitter(tree, splitter);
+        else {
+            splitter.key -= tree.lCnt;
+            setRightSplitter(tree, splitter);
+        }
+    }
+
+    private static void setLeftSplitter(TreapNode tree, TreapNode node) {
+        if (tree != null) {
+            if (node != null) {
+                tree.lCnt += node.tCnt;
+                tree.tCnt += node.tCnt;
+            }
+            if (tree.left != null)
+                insertSplitter(tree.left, node);
+            else {
+                tree.left = node;
+                if (node != null)
+                    node.parent = tree;
+            }
+        }
+    }
+
+    private static void setRightSplitter(TreapNode tree, TreapNode node) {
+        if (tree != null) {
+            if (node != null)
+                tree.tCnt += node.tCnt;
+            if (tree.right != null)
+                insertSplitter(tree.right, node);
+            else {
+                tree.right = node;
+                if (node != null)
+                    node.parent = tree;
+            }
+        }
+    }
 }
 
 public class Treap {
     TreapNode root = null;
+
+    public Treap(TreapNode root) {
+        this.root = root;
+    }
+
+    public Treap() {
+    }
 
     public static void main(String[] args) {
         int[] ar = {1, 2, 3};
@@ -155,6 +201,21 @@ public class Treap {
         }
 
         treap.print();
+        TreapNode[] split = treap.split(2);
+        new Treap(split[0]).print();
+        new Treap(split[1]).print();
+    }
+
+    private TreapNode[] split(int rank) {
+        TreapNode dummy = new TreapNode(Integer.MAX_VALUE, rank, Integer.MAX_VALUE);
+        if (root == null)
+            root = dummy;
+        else TreapNode.insertSplitter(root, dummy);
+        TreapNode.maintainMaxHeap(dummy);
+        root = dummy;
+        TreapNode[] ans = new TreapNode[]{TreapNode.stripLeft(dummy), TreapNode.stripRight(dummy)};
+        root = null;
+        return ans;
     }
 
     private void print() {
