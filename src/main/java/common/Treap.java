@@ -8,6 +8,8 @@ import com.google.gson.Gson;
 class TreapNode {
     public int data;
     public int rank;
+    public int leftCnt = 1;
+    public int totalCnt = 1;
     public double w;
     public transient TreapNode left, right, parent;
 }
@@ -20,7 +22,9 @@ public class Treap {
             root = node;
             return;
         }
+        cur.totalCnt++;
         if (node.rank < cur.rank) {
+            cur.leftCnt++;
             if (cur.left != null)
                 insert(cur.left, node);
             else {
@@ -105,8 +109,10 @@ public class Treap {
     private static void assignLeftChild(TreapNode node, TreapNode child) {
         if (node != null) {
             node.left = child;
+            node.leftCnt = 1;
             if (child != null) {
                 child.parent = node;
+                node.leftCnt += child.totalCnt;
             }
         }
     }
