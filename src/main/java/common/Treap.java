@@ -26,7 +26,7 @@ class TreapNode {
         else setRight(tree, node);
     }
 
-    private static void setRight(TreapNode tree, TreapNode node) {
+    public static void setRight(TreapNode tree, TreapNode node) {
         if (tree != null) {
             if (node != null)
                 tree.tCnt += node.tCnt;
@@ -40,7 +40,7 @@ class TreapNode {
         }
     }
 
-    private static void setLeft(TreapNode tree, TreapNode node) {
+    public static void setLeft(TreapNode tree, TreapNode node) {
         if (tree != null) {
             if (node != null) {
                 tree.lCnt += node.tCnt;
@@ -59,6 +59,7 @@ class TreapNode {
     public static void print(TreapNode root) {
         if (root == null)
             return;
+        print(root.left);
         System.out.print(new Gson().toJson(root));
         System.out.print(" -> ");
         System.out.print(new Gson().toJson(root.left));
@@ -66,7 +67,6 @@ class TreapNode {
         System.out.print(new Gson().toJson(root.right));
         System.out.print(" -> ");
         System.out.println(new Gson().toJson(root.parent));
-        print(root.left);
         print(root.right);
     }
 
@@ -179,6 +179,37 @@ class TreapNode {
             }
         }
     }
+
+    public static TreapNode join(TreapNode tree1, TreapNode tree2) {
+        TreapNode res = null;
+        TreapNode concilator = new TreapNode(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE);
+        concilator.lCnt = 0;
+        concilator.tCnt = 0;
+        TreapNode.setLeft(concilator, tree1);
+        TreapNode.setRight(concilator, tree2);
+        while (concilator.left != null || concilator.right != null) {
+            boolean leftMax = false;
+            double max = concilator.w;
+            if (concilator.left != null && concilator.left.w >= max) {
+                max = concilator.left.w;
+                leftMax = true;
+            }
+            if (concilator.right != null && concilator.right.w >= max) {
+                max = concilator.right.w;
+                leftMax = false;
+            }
+            if (leftMax)
+                doRightRotation(concilator);
+            else doLeftRotation(concilator);
+            if (concilator.parent != null && concilator.parent.isRoot())
+                res = concilator.parent;
+        }
+        if (concilator.parent != null)
+            if (concilator.parent.left == concilator)
+                stripLeft(concilator.parent);
+            else stripRight(concilator.parent);
+        return res;
+    }
 }
 
 public class Treap {
@@ -189,6 +220,10 @@ public class Treap {
     }
 
     public Treap() {
+    }
+
+    public Treap(TreapNode tree1, TreapNode tree2) {
+        root = TreapNode.join(tree1, tree2);
     }
 
     public static void main(String[] args) {
@@ -204,6 +239,8 @@ public class Treap {
         TreapNode[] split = treap.split(2);
         new Treap(split[0]).print();
         new Treap(split[1]).print();
+        Treap joined = new Treap(split[1], split[0]);
+        joined.print();
     }
 
     private TreapNode[] split(int rank) {
