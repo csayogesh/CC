@@ -13,7 +13,6 @@ class Node {
 
 
 public class HuffmanDecoding {
-
     void decode(String S, Node root) {
         StringBuilder sb = new StringBuilder();
         Node cur = root;
