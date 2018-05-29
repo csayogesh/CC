@@ -44,7 +44,7 @@ public class BalancedForest {
         for (int i = 0; i < nodeSums.length; i++)
             candidates.add(i + 1);
         long ans = Long.MAX_VALUE;
-        long oneThird = (int) Math.ceil((total * 1.0) / 3.0);
+        long oneThird = (long) Math.ceil((total * 1.0) / 3.0);
         for (int i = 0; i < candidates.size() - 1; i++)
             for (int j = i + 1; j < candidates.size(); j++) {
                 int node1 = candidates.get(i);
@@ -83,6 +83,8 @@ public class BalancedForest {
                     ans = Math.min(ans, sum2 - sum1);
                 else if (sum1 == sum3 && sum1 >= oneThird)
                     ans = Math.min(ans, sum3 - sum2);
+                if (ans < 0)
+                    System.out.println();
             }
         if (ans == Long.MAX_VALUE)
             return -1;
