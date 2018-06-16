@@ -2,7 +2,6 @@ package hckrnk;
 
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.TreeMap;
 
 /**
  * Created by yogesh.bh on 16/06/18.
@@ -12,24 +11,30 @@ public class QueriesWithFixedLength {
     static int[] solve(int[] arr, int[] queries) {
         int[] ans = new int[queries.length];
         int ind = 0;
+        int log = (int) Math.ceil(Math.log(arr.length) / Math.log(2));
+        int[][] parseTable = new int[arr.length][log + 1];
+        for (int i = 0; i <= log; i++) {
+            for (int j = 0; j < arr.length; j++) {
+                if (i == 0)
+                    parseTable[j][i] = arr[j];
+                else {
+                    if (j + (1 << (i - 1)) < arr.length)
+                        parseTable[j][i] = Math.max(parseTable[j][i - 1], parseTable[j + (1 << (i - 1))][i - 1]);
+                    else parseTable[j][i] = parseTable[j][i - 1];
+                }
+            }
+        }
         for (int q : queries) {
-            TreeMap<Integer, Integer> treeMap = new TreeMap<>();
-            int curSize = 0;
             ans[ind] = Integer.MAX_VALUE;
-            for (int i = 0; i < arr.length; i++) {
-                treeMap.putIfAbsent(arr[i], 0);
-                treeMap.put(arr[i], treeMap.get(arr[i]) + 1);
-                curSize++;
-                if (curSize > q) {
-                    int cnt = treeMap.get(arr[i - q]);
-                    if (cnt == 1)
-                        treeMap.remove(arr[i-q]);
-                    else treeMap.put(arr[i-q], treeMap.get(arr[i-q]) - 1);
-                    curSize--;
+            for (int i = 0; i <= arr.length - q; i++) {
+                int lg = (int) (Math.log(q) / Math.log(2));
+                int end = i + q - 1;
+                int upto = i + (1 << lg) - 1;
+                int max = parseTable[i][lg];
+                if (upto < end) {
+                    max = Math.max(max, parseTable[end + 1 - (1 << lg)][lg]);
                 }
-                if (curSize == q) {
-                    ans[ind] = Math.min(ans[ind], treeMap.lastKey());
-                }
+                ans[ind] = Math.min(ans[ind], max);
             }
             ind++;
         }
