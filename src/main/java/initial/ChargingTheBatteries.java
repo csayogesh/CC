@@ -1,3 +1,5 @@
+package initial;
+
 import common.BasicAlgorithms;
 
 import java.util.*;
