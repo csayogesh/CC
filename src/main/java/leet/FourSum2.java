@@ -1,8 +1,7 @@
 package leet;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -10,31 +9,38 @@ import java.util.List;
  */
 public class FourSum2 {
     static public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
-        Arrays.sort(C);
-        Arrays.sort(D);
+        Map<Integer, Integer> cMap = new HashMap<>();
+        for (int a : C) {
+            cMap.putIfAbsent(a, 0);
+            cMap.put(a, cMap.get(a) + 1);
+        }
+        Map<Integer, Integer> dMap = new HashMap<>();
+        for (int a : D) {
+            dMap.putIfAbsent(a, 0);
+            dMap.put(a, dMap.get(a) + 1);
+        }
         int ans = 0;
-        for (int i = 0; i < A.length; i++) {
-            for (int j = 0; j < B.length; j++) {
-                int target2 = 0 - A[i] - B[j];
-                for (int k = 0, l = D.length - 1; k < C.length && l >= 0; ) {
-                    if ((C[k] + D[l]) < target2) k++;
-                    else if ((C[k] + D[l]) > target2) l--;
-                    else {
-                        ans++;
-                        k++;
-                        l--;
-                    }
-                }
+        Map<Integer, Integer> sMap = new HashMap<>();
+        for (int aA : A)
+            for (int aB : B) {
+                sMap.putIfAbsent(aA + aB, 0);
+                sMap.put(aA + aB, sMap.get(aA + aB) + 1);
+            }
+
+        for (int cC : cMap.keySet()) {
+            for (int dD : dMap.keySet()) {
+                if (sMap.containsKey((-cC - dD)))
+                    ans += sMap.get(-cC - dD) * cMap.get(cC) * dMap.get(dD);
             }
         }
         return ans;
     }
 
     public static void main(String[] args) {
-        int A[] = new int[]{1, 2};
-        int B[] = new int[]{-2, -1};
-        int C[] = new int[]{-1, 2};
-        int D[] = new int[]{0, 2};
+        int A[] = new int[]{0, 1, -1};
+        int B[] = new int[]{-1, 1, 0};
+        int C[] = new int[]{0, 0, 1};
+        int D[] = new int[]{-1, 1, 1};
         int ans = fourSumCount(A, B, C, D);
         System.out.println(ans);
     }
