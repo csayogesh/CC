@@ -14,17 +14,11 @@ public class SmallestRotationWithHighestScore {
                     int end = arr.length - arr[i] + i + 1;
                     inter[st]++;
                     inter[end]--;
-//                    System.out.println(st + " " + end);
-                } else if (arr[i] == i) {
-                    int st = i + 1;
-                    int end = arr.length;
-//                    System.out.println(st + " " + end);
-                    inter[st]++;
-                    inter[end]--;
-                } else if (arr[i] < i) {
+                    System.out.println(st + " " + end);
+                }  else if (arr[i] <= i) {
                     int st1 = 0, end1 = i - arr[i] + 1;
                     int end2 = arr.length, st2 = i + 1;
-//                    System.out.println(st1 + " " + end1 + " " + st2 + " " + end2);
+                    System.out.println(st1 + " " + end1 + " " + st2 + " " + end2);
                     inter[st1]++;
                     inter[end1]--;
                     inter[st2]++;
@@ -46,7 +40,7 @@ public class SmallestRotationWithHighestScore {
     }
 
     public static void main(String[] args) {
-        int[] arr = new int[]{2, 1, 1, 4, 0};
+        int[] arr = new int[]{2, 4, 1, 3, 0};
         int ans = bestRotation(arr);
         System.out.println(ans);
     }
