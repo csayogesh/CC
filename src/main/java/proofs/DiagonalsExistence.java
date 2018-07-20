@@ -12,13 +12,11 @@ public class DiagonalsExistence {
             }
             System.out.println();
         }
-//        System.out.println();
     }
 
     private static int[][] getSolution(int n, int k) {
         int[][] res = new int[n][n];
-        boolean st = putDiagonals(res, 0, 0, k);
-        System.out.println(st);
+        putDiagonals(res, 0, 0, k);
         return res;
     }
 
@@ -32,14 +30,16 @@ public class DiagonalsExistence {
             if (valid(grid, i, j, v)) {
                 int old = grid[i][j];
                 grid[i][j] = v;
-                for (int x = i; x < grid.length; x++) {
-                    for (int y = x == i ? j + 1 : 0; y < grid.length; y++) {
-                        if (grid[x][y] == 0 && putDiagonals(grid, x, y, v != 0 ? k - 1 : k)) {
-
-                            return true;
-                        }
-                    }
+                int x, y;
+                if (j < grid.length - 1) {
+                    y = j + 1;
+                    x = i;
+                } else {
+                    y = 0;
+                    x = i + 1;
                 }
+                if (putDiagonals(grid, x, y, v != 0 ? k - 1 : k))
+                    return true;
                 grid[i][j] = old;
             }
         }
