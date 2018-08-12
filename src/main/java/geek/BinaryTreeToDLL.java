@@ -1,21 +1,22 @@
 package geek;
 
-class Node {
-    Node left, right;
-    int data;
-
-    Node(int d) {
-        data = d;
-        left = right = null;
-    }
-}
-
-class DLLNode {
-    Node head;
-    Node tail;
-}
 
 public class BinaryTreeToDLL {
+    class Node {
+        Node left, right;
+        int data;
+
+        Node(int d) {
+            data = d;
+            left = right = null;
+        }
+    }
+
+    class DLLNode {
+        Node head;
+        Node tail;
+    }
+
     Node head;
 
     Node BToDLL(Node root) {
