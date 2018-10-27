@@ -1,4 +1,4 @@
-package fl;
+
 
 public class Meeting {
     String name;
