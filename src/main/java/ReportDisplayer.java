@@ -29,6 +29,7 @@ public class ReportDisplayer {
         System.out.println(store.getStockLeftAtGivenTime(System.currentTimeMillis() / 1000));
         System.out.println(indiaRegion.getStockLeftAtGivenTime(System.currentTimeMillis() / 1000));
         System.out.println(indiaRegion.subRegionWithHighestTypeConsumption(Beverages.class));
+        System.out.println(cityBangalore.subRegionWithHighestTypeConsumption(FoodItem.class));
         System.out.println(indiaRegion.storeWithHighestNumberOfUnitsSoldForAMonth());
     }
 

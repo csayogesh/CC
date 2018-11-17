@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Store implements DailySaleReport,StockLeftReport {
+public class Store implements DailySaleReport, StockLeftReport, TypeWiseSaleReport {
     private String id;
     private List<Sale> sales = new ArrayList<>();
     private List<Item> addedItems = new ArrayList<>();

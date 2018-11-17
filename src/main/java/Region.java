@@ -1,7 +1,7 @@
 import java.util.*;
 import java.util.stream.Collectors;
 
-public abstract class Region implements DailySaleReport, StockLeftReport {
+public abstract class Region implements DailySaleReport, StockLeftReport, TypeWiseSaleReport {
     private final String type;
     private Map<String, Region> enclosedRegions = new HashMap<>();
     private String regionId;
@@ -19,6 +19,10 @@ public abstract class Region implements DailySaleReport, StockLeftReport {
 
     public String getType() {
         return type;
+    }
+
+    public String getId() {
+        return regionId;
     }
 
     public List<Region> getListOfRegions() {
@@ -63,12 +67,15 @@ public abstract class Region implements DailySaleReport, StockLeftReport {
     public String subRegionWithHighestTypeConsumption(Class itemType) throws Exception {
         String state = null;
         double currentMax = 0;
-        for (Region region : getListOfRegions()) {
-            Map<Class, Double> lastMonthReport = region.getTypeWiseSales();
+        List<TypeWiseSaleReport> ls = new ArrayList<>();
+        ls.addAll(getListOfRegions());
+        ls.addAll(getAllStores());
+        for (TypeWiseSaleReport reporter : ls) {
+            Map<Class, Double> lastMonthReport = reporter.getTypeWiseSales();
             Double max = lastMonthReport.getOrDefault(itemType, 0.0);
             if (max >= currentMax) {
                 currentMax = max;
-                state = region.getRegionId();
+                state = reporter.getId();
             }
         }
         return state;
