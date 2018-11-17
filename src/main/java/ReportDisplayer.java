@@ -4,9 +4,9 @@ import java.util.TreeMap;
 
 public class ReportDisplayer {
     public static void main(String[] args) throws Exception {
-        Region indiaRegion = new Region("India", "Country");
-        Region karnatakaState = new Region("Karnataka", "State");
-        Region cityBangalore = new Region("Bangalore", "City");
+        Region indiaRegion = new Country("India");
+        Region karnatakaState = new StateRegion("Karnataka");
+        Region cityBangalore = new CityRegion("Bangalore");
         indiaRegion.addRegion(karnatakaState);
         karnatakaState.addRegion(cityBangalore);
         Store store = new Store("store1");

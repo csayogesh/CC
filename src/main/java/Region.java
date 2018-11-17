@@ -1,14 +1,12 @@
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
-public class Region implements DailySaleReport {
+public abstract class Region implements DailySaleReport {
     private final String type;
     private Map<String, Region> enclosedRegions = new HashMap<>();
     private String regionId;
     private Map<String, Store> stores = new HashMap<>();
+    protected Set<String> allowedSubtypes;
 
     public Region(String regionId, String type) {
         this.regionId = regionId;
@@ -27,11 +25,13 @@ public class Region implements DailySaleReport {
         return enclosedRegions.values().stream().collect(Collectors.toList());
     }
 
-    public void addStore(Store store) {
+    public void addStore(Store store) throws Exception {
         stores.put(store.getId(), store);
     }
 
-    public void addRegion(Region region) {
+    public void addRegion(Region region) throws Exception {
+        if (!allowedSubtypes.contains(region.getType()))
+            throw new Exception("Not allowed to add " + region.getType() + " to the " + type + " region");
         enclosedRegions.put(region.getRegionId(), region);
     }
 
