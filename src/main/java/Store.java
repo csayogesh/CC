@@ -1,11 +1,11 @@
 import java.util.*;
 
-public class Store implements DailySaleReport {
+public class Store implements DailySaleReport,StockLeftReport {
     private String id;
     private List<Sale> sales = new ArrayList<>();
     private List<Item> addedItems = new ArrayList<>();
     private Map<Long, Integer> rawItemsCount = new HashMap<>();
-    private Map<String, Double> itemPrices = new HashMap<>();
+    private Map<String, Double> menuCard = new HashMap<>();
 
     public Store(String id) {
         this.id = id;
@@ -16,7 +16,7 @@ public class Store implements DailySaleReport {
     }
 
     public double getItemPrice(String id) {
-        return itemPrices.get(id);
+        return menuCard.get(id);
     }
 
     public void sale(String id, int quantity) throws Exception {
@@ -25,7 +25,7 @@ public class Store implements DailySaleReport {
             throw new Exception("Item " + id + " not present at store");
         if (item.getQuantity() < quantity)
             throw new Exception("Insufficient quantity is available at the store");
-        Sale sale = new Sale(item, quantity, itemPrices.get(id));
+        Sale sale = new Sale(item, quantity, menuCard.get(id));
         sales.add(sale);
     }
 
@@ -37,7 +37,7 @@ public class Store implements DailySaleReport {
     }
 
     public void addItem(Item item, double unitPrice) {
-        itemPrices.put(item.getId(), unitPrice);
+        menuCard.put(item.getId(), unitPrice);
         rawItemsCount.putIfAbsent(item.getTimestamp(), 0);
         rawItemsCount.put(item.getTimestamp(), rawItemsCount.get(item.getTimestamp()) + item.getQuantity());
         for (Item item1 : addedItems)

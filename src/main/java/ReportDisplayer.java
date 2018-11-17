@@ -16,7 +16,7 @@ public class ReportDisplayer {
         store.sale("Sandwitch", 2);
 
         Store store2 = new Store("store2");
-        store2.addItem(new FoodItem("Sandwitch", 10), 25);
+        store2.addItem(new FoodItem("Sandwitch", 10), 1);
         store2.sale("Sandwitch", 4);
         store2.sale("Sandwitch", 2);
         store2.sale("Sandwitch", 2);
@@ -25,7 +25,9 @@ public class ReportDisplayer {
         cityBangalore.addStore(store2);
         displayDailyReport(store.getDailySaleAt());
         displayDailyReport(karnatakaState.getDailySaleAt());
+        displayDailyReport(indiaRegion.getDailySaleAt());
         System.out.println(store.getStockLeftAtGivenTime(System.currentTimeMillis() / 1000));
+        System.out.println(indiaRegion.getStockLeftAtGivenTime(System.currentTimeMillis() / 1000));
         System.out.println(indiaRegion.stateWithHighestBeverageConsumption());
         System.out.println(indiaRegion.storeWithHighestNumberOfUnitsSoldForAMonth());
     }

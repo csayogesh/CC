@@ -1,7 +1,7 @@
 import java.util.*;
 import java.util.stream.Collectors;
 
-public abstract class Region implements DailySaleReport {
+public abstract class Region implements DailySaleReport, StockLeftReport {
     private final String type;
     private Map<String, Region> enclosedRegions = new HashMap<>();
     private String regionId;
@@ -130,5 +130,15 @@ public abstract class Region implements DailySaleReport {
             res.putIfAbsent(entry.getKey(), 0);
             res.put(entry.getKey(), res.get(entry.getKey()) + entry.getValue());
         }
+    }
+
+    public int getStockLeftAtGivenTime(Long time) {
+        List<StockLeftReport> ls = new ArrayList<>();
+        ls.addAll(getAllStores());
+        ls.addAll(getListOfRegions());
+        int cnt = 0;
+        for (StockLeftReport report : ls)
+            cnt += report.getStockLeftAtGivenTime(time);
+        return cnt;
     }
 }
