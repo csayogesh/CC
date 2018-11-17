@@ -60,14 +60,12 @@ public abstract class Region implements DailySaleReport, StockLeftReport {
         }
     }
 
-    public String stateWithHighestBeverageConsumption() throws Exception {
-        if (!type.equals("Country"))
-            throw new Exception("Not valid report on type " + type);
+    public String subRegionWithHighestTypeConsumption(Class itemType) throws Exception {
         String state = null;
         double currentMax = 0;
         for (Region region : getListOfRegions()) {
             Map<Class, Double> lastMonthReport = region.getTypeWiseSales();
-            Double max = lastMonthReport.getOrDefault(Beverages.class, 0.0);
+            Double max = lastMonthReport.getOrDefault(itemType, 0.0);
             if (max >= currentMax) {
                 currentMax = max;
                 state = region.getRegionId();
