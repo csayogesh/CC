@@ -1,4 +1,4 @@
-
+package hckrnk.meetings;
 
 public class Person {
     String name;

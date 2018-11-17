@@ -1,4 +1,4 @@
-
+package hckrnk.meetings;
 
 import java.io.File;
 import java.util.*;
@@ -23,12 +23,12 @@ public class MeetingAssistent {
                 String[] ar = sc.nextLine().split(":\\s+");
                 person = PersonInventory.getPersonDetails(ar[1].toLowerCase().trim());
                 if (person == null) {
-                    System.out.println("Person " + ar[1] + " not found");
+                    System.out.println("hckrnk.meetings.Person " + ar[1] + " not found");
                     return;
                 }
             }
             if (person == null) {
-                System.out.println("Person not found");
+                System.out.println("hckrnk.meetings.Person not found");
                 return;
             }
             while (sc.hasNext()) {
