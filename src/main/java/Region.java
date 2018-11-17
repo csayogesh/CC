@@ -1,7 +1,7 @@
 import java.util.*;
 import java.util.stream.Collectors;
 
-public abstract class Region implements DailySaleReport, StockLeftReport, TypeWiseSaleReport {
+public abstract class Region implements DailySaleReport, StockLeftReport, TypeWiseSaleReport, StoreWiseSalesReport {
     private final String type;
     private Map<String, Region> enclosedRegions = new HashMap<>();
     private String regionId;
@@ -82,18 +82,14 @@ public abstract class Region implements DailySaleReport, StockLeftReport, TypeWi
     }
 
     public String storeWithHighestNumberOfUnitsSoldForAMonth() throws Exception {
-        if (!type.equals("Country"))
-            throw new Exception("Not valid report on type " + type);
         String state = null;
         double currentMax = 0;
-        for (Region region : getListOfRegions()) {
-            Map<String, Integer> lastMonthReport = region.getStoreWiseSales();
-            for (Map.Entry<String, Integer> entry : lastMonthReport.entrySet())
-                if (entry.getValue() >= currentMax) {
-                    currentMax = entry.getValue();
-                    state = entry.getKey();
-                }
-        }
+        Map<String, Integer> lastMonthReport = getStoreWiseSales();
+        for (Map.Entry<String, Integer> entry : lastMonthReport.entrySet())
+            if (entry.getValue() >= currentMax) {
+                currentMax = entry.getValue();
+                state = entry.getKey();
+            }
         return state;
     }
 
@@ -119,13 +115,12 @@ public abstract class Region implements DailySaleReport, StockLeftReport, TypeWi
 
     public Map<String, Integer> getStoreWiseSales() {
         Map<String, Integer> res = new HashMap<>();
-        for (Region region : getListOfRegions()) {
+        List<StoreWiseSalesReport> ls = new ArrayList<>();
+        ls.addAll(getListOfRegions());
+        ls.addAll(getAllStores());
+        for (StoreWiseSalesReport region : ls) {
             Map<String, Integer> lastMonthReport = region.getStoreWiseSales();
             mergeToStoreSales(res, lastMonthReport);
-        }
-        for (Store store : getAllStores()) {
-            int dailySale = store.getStoreWiseSales();
-            res.put(store.getId(), dailySale);
         }
         return res;
     }

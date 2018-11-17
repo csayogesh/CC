@@ -17,7 +17,6 @@ public class ReportDisplayer {
 
         Store store2 = new Store("store2");
         store2.addItem(new FoodItem("Sandwitch", 10), 1);
-        store2.sale("Sandwitch", 4);
         store2.sale("Sandwitch", 2);
         store2.sale("Sandwitch", 2);
 
@@ -27,7 +26,6 @@ public class ReportDisplayer {
         displayDailyReport(karnatakaState.getDailySaleAt());
         displayDailyReport(indiaRegion.getDailySaleAt());
         System.out.println(store.getStockLeftAtGivenTime(System.currentTimeMillis() / 1000));
-        System.out.println(indiaRegion.getStockLeftAtGivenTime(System.currentTimeMillis() / 1000));
         System.out.println(indiaRegion.subRegionWithHighestTypeConsumption(Beverages.class));
         System.out.println(cityBangalore.subRegionWithHighestTypeConsumption(FoodItem.class));
         System.out.println(indiaRegion.storeWithHighestNumberOfUnitsSoldForAMonth());

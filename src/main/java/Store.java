@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Store implements DailySaleReport, StockLeftReport, TypeWiseSaleReport {
+public class Store implements DailySaleReport, StockLeftReport, TypeWiseSaleReport, StoreWiseSalesReport {
     private String id;
     private List<Sale> sales = new ArrayList<>();
     private List<Item> addedItems = new ArrayList<>();
@@ -86,13 +86,15 @@ public class Store implements DailySaleReport, StockLeftReport, TypeWiseSaleRepo
         return finalRes;
     }
 
-    public int getStoreWiseSales() {
+    public Map<String, Integer> getStoreWiseSales() {
         TreeMap<Long, Integer> res = new TreeMap<>();
         for (Sale sale : sales) {
             long monthId = sale.getSaleTime() - sale.getSaleTime() % Constants.ONEMONTH;
             res.putIfAbsent(monthId, 0);
             res.put(monthId, res.get(monthId) + sale.getQuantity());
         }
-        return res.lastEntry().getValue();
+        Map<String, Integer> finalRes = new HashMap<>();
+        finalRes.put(id, res.lastEntry().getValue());
+        return finalRes;
     }
 }
