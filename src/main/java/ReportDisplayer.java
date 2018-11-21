@@ -1,33 +1,54 @@
-import java.util.Date;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class ReportDisplayer {
     public static void main(String[] args) throws Exception {
         Region indiaRegion = new Country("India");
         Region karnatakaState = new StateRegion("Karnataka");
         Region cityBangalore = new CityRegion("Bangalore");
+        Region maisurCity = new CityRegion("Maisur");
         indiaRegion.addRegion(karnatakaState);
         karnatakaState.addRegion(cityBangalore);
+        karnatakaState.addRegion(maisurCity);
         Store store = new Store("store1");
-        store.addItem(new FoodItem("Sandwitch", 10), 25);
+        store.addItem(new FoodItem("Sandwitch", 20), 25);
         store.sale("Sandwitch", 2);
         store.sale("Sandwitch", 2);
-        store.sale("Sandwitch", 2);
+        store.sale("Sandwitch", 12);
 
         Store store2 = new Store("store2");
-        store2.addItem(new FoodItem("Sandwitch", 10), 1);
+        store2.addItem(new FoodItem("Sandwitch", 100), 1);
         store2.sale("Sandwitch", 2);
-        store2.sale("Sandwitch", 2);
+        store2.sale("Sandwitch", 52);
 
+
+        Store store3 = new Store("store3");
+        store3.addItem(new FoodItem("Sandwitch", 10), 2);
+        store3.addItem(new Beverages("Pepsi", 10), 2);
+        store3.addItem(new Beverages("Coke", 10), 2);
+        store3.sale("Sandwitch", 2);
+        store3.sale("Sandwitch", 4);
+
+        maisurCity.addStore(store3);
         cityBangalore.addStore(store);
         cityBangalore.addStore(store2);
-        displayDailyReport(store.getDailySaleAt());
-        displayDailyReport(karnatakaState.getDailySaleAt());
-        displayDailyReport(indiaRegion.getDailySaleAt());
-        System.out.println(store.getStockLeftAtGivenTime(System.currentTimeMillis() / 1000));
-        System.out.println(indiaRegion.subRegionWithHighestTypeConsumption(Beverages.class));
-        System.out.println(cityBangalore.subRegionWithHighestTypeConsumption(FoodItem.class));
+
+//        displayDailyReport(karnatakaState.getDailySaleAt());
+//        displayDailyReport(store.getDailySaleAt());
+//        displayDailyReport(karnatakaState.getDailySaleAt());
+//        displayDailyReport(indiaRegion.getDailySaleAt());
+
+//        List<StockLeftReport> stores = new ArrayList<StockLeftReport>() {{
+//            add(indiaRegion);
+//            add(karnatakaState);
+//            add(cityBangalore);
+//            add(store2);
+//        }};
+//        for (StockLeftReport st : stores)
+//            System.out.println(st.getStockLeftAtGivenTime(System.currentTimeMillis() / 1000));
+
+//        System.out.println(store3.getStockLeftAtGivenTime(System.currentTimeMillis() / 1000));
+//        System.out.println(indiaRegion.subRegionWithHighestTypeConsumption(Beverages.class));
+//        System.out.println(cityBangalore.subRegionWithHighestTypeConsumption(FoodItem.class));
         System.out.println(indiaRegion.storeWithHighestNumberOfUnitsSoldForAMonth());
     }
 
