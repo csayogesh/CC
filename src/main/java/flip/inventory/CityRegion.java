@@ -1,3 +1,5 @@
+package flip.inventory;
+
 import java.util.HashSet;
 
 public class CityRegion extends Region {

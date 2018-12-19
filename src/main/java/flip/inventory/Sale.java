@@ -1,3 +1,5 @@
+package flip.inventory;
+
 public class Sale {
     private Item item;
     private int quantity;

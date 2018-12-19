@@ -1,3 +1,4 @@
+package flip.inventory;
 
 public class Constants {
     public final static long ONEDAY = 24 * 60 * 60;

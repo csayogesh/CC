@@ -1,8 +1,10 @@
+package flip.inventory;
+
 import java.util.HashSet;
 
 public class Country extends Region {
     public Country(String india) {
-        super(india, "Country");
+        super(india, "flip.inventory.Country");
         allowedSubtypes = new HashSet<String>() {{
             add("State");
         }};
@@ -10,6 +12,6 @@ public class Country extends Region {
 
     @Override
     public void addStore(Store store) throws Exception {
-        throw new Exception("Cannot add store to Country region");
+        throw new Exception("Cannot add store to flip.inventory.Country region");
     }
 }

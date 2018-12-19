@@ -1,3 +1,5 @@
+package flip.inventory;
+
 public abstract class Item {
     long timestamp = System.currentTimeMillis() / 1000;
     String id;

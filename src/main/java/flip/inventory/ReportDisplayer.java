@@ -1,3 +1,5 @@
+package flip.inventory;
+
 import java.util.*;
 
 public class ReportDisplayer {
@@ -37,18 +39,18 @@ public class ReportDisplayer {
 //        displayDailyReport(karnatakaState.getDailySaleAt());
 //        displayDailyReport(indiaRegion.getDailySaleAt());
 
-//        List<StockLeftReport> stores = new ArrayList<StockLeftReport>() {{
+//        List<flip.inventory.StockLeftReport> stores = new ArrayList<flip.inventory.StockLeftReport>() {{
 //            add(indiaRegion);
 //            add(karnatakaState);
 //            add(cityBangalore);
 //            add(store2);
 //        }};
-//        for (StockLeftReport st : stores)
+//        for (flip.inventory.StockLeftReport st : stores)
 //            System.out.println(st.getStockLeftAtGivenTime(System.currentTimeMillis() / 1000));
 
 //        System.out.println(store3.getStockLeftAtGivenTime(System.currentTimeMillis() / 1000));
-//        System.out.println(indiaRegion.subRegionWithHighestTypeConsumption(Beverages.class));
-//        System.out.println(cityBangalore.subRegionWithHighestTypeConsumption(FoodItem.class));
+//        System.out.println(indiaRegion.subRegionWithHighestTypeConsumption(flip.inventory.Beverages.class));
+//        System.out.println(cityBangalore.subRegionWithHighestTypeConsumption(flip.inventory.FoodItem.class));
         System.out.println(indiaRegion.storeWithHighestNumberOfUnitsSoldForAMonth());
     }
 

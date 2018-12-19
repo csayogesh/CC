@@ -1,3 +1,5 @@
+package flip.inventory;
+
 import java.util.*;
 
 public class Store implements DailySaleReport, StockLeftReport, TypeWiseSaleReport, StoreWiseSalesReport {
@@ -22,7 +24,7 @@ public class Store implements DailySaleReport, StockLeftReport, TypeWiseSaleRepo
     public void sale(String id, int quantity) throws Exception {
         Item item = findItem(id);
         if (item == null)
-            throw new Exception("Item " + id + " not present at store");
+            throw new Exception("flip.inventory.Item " + id + " not present at store");
         if (item.getQuantity() < quantity)
             throw new Exception("Insufficient quantity is available at the store");
         Sale sale = new Sale(item, quantity, menuCard.get(id));

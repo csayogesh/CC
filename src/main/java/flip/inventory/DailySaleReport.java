@@ -1,3 +1,5 @@
+package flip.inventory;
+
 import java.util.TreeMap;
 
 public interface DailySaleReport {
